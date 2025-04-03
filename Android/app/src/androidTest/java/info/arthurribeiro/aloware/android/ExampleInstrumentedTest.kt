@@ -1,4 +1,4 @@
-package info.arthurribeiro.android
+package info.arthurribeiro.aloware.android
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("info.arthurribeiro.android", appContext.packageName)
+        assertEquals("info.arthurribeiro.aloware.android", appContext.packageName)
     }
 }

@@ -1,3 +1,5 @@
 Android/gradle.properties
 Android/.idea/
 /build
+voice-quickstart-android
+voice-quickstart-ios

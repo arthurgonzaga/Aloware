@@ -1,4 +1,4 @@
-package info.arthurribeiro.android
+package info.arthurribeiro.aloware.android
 
 import org.junit.Test
 
