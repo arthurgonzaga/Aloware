@@ -1,5 +1,11 @@
 Android/gradle.properties
 Android/.idea/
 /build
+Server/.DS_Store
+Server/.env
+Server/npm-debug.log
+Server/node_modules
+Server/.twilio-functions
+Server/.twiliodeployinfo
 voice-quickstart-android
 voice-quickstart-ios
