@@ -1,4 +1,4 @@
-# 📱 Aloware Test Project — Android + iOS + Twilo
+# 📱 Aloware Test Project — Android + iOS + Server
 
 This is a technical test project featuring native **Android** and **iOS** apps, along with **Twilo Service** for serverless logic.
 
