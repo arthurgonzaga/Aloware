@@ -7,5 +7,12 @@ Server/npm-debug.log
 Server/node_modules
 Server/.twilio-functions
 Server/.twiliodeployinfo
-voice-quickstart-android
-voice-quickstart-ios
+iOS/Pods/
+iOS/Podfile.lock
+iOS/Aloware.xcworkspace
+iOS/Carthage
+iOS/Cartfile.resolved
+
+iOS/xcuserdata/
+iOS/*.xcuserstate
+iOS/Aloware/AccessTokens.plist

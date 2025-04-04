@@ -1,5 +1,6 @@
 const callerNumber = '+5583993833323';
-const callerId = 'client:alice';
+const callerIos = 'client:arthur-ios';
+const callerAndroid = 'client:arthur-android';
 
 exports.handler = function(context, event, callback) {
   const twiml = new Twilio.twiml.VoiceResponse();
@@ -7,13 +8,17 @@ exports.handler = function(context, event, callback) {
   console.log("event -> " + event)
 
   var to =  (event.to) ? event.to : event.To;
+  console.log("to -> " + to)
   if (!to) {
   	twiml.say('Congratulations! You have made your first call! Good bye.');
   } else if (isNumber(to)) {
   	const dial = twiml.dial({callerId : callerNumber});
     dial.number(to);
-  } else {
-  	const dial = twiml.dial({callerId : callerId});
+  } else if(to == "arthur-ios"){
+  	const dial = twiml.dial({callerId : callerAndroid});
+  	dial.client(to);
+  } else if(to == "arthur-android"){
+  	const dial = twiml.dial({callerId : callerIos});
   	dial.client(to);
   }
 
