@@ -22,107 +22,123 @@ import java.util.UUID
 abstract class VoiceObserverViewModel :
     ViewModel(),
     DefaultLifecycleObserver,
-    VoiceService.Observer,
     Consumer<Intent> {
+    private val observer = Observer()
     protected val _uiState: MutableStateFlow<AlowareUiState> = MutableStateFlow(AlowareUiState())
     protected val _currentScreen = MutableStateFlow(Screen.Initial)
 
     init {
         withVoiceService {
-            registerObserver(this@VoiceObserverViewModel)
+            registerObserver(observer)
         }
     }
 
-    override fun connectCall(
-        callId: UUID,
-        options: ConnectOptions,
-    ) {
-        _currentScreen.value = Screen.Call
-    }
-
-    override fun disconnectCall(callId: UUID) {
-        _currentScreen.value = Screen.Initial
-        _uiState.update { AlowareUiState() }
-    }
-
-    override fun acceptIncomingCall(callId: UUID) {
-        _currentScreen.value = Screen.Call
-    }
-
-    override fun rejectIncomingCall(callId: UUID) {
-        _currentScreen.value = Screen.Initial
-    }
-
-    override fun incomingCall(
-        callId: UUID,
-        callInvite: CallInvite,
-    ) {
-        _uiState.update {
-            it.copy(
-                callInvite = callInvite,
-            )
+    inner class Observer : VoiceService.Observer {
+        override fun connectCall(
+            callId: UUID,
+            options: ConnectOptions,
+        ) {
+            _currentScreen.value = Screen.Call
         }
-    }
 
-    override fun cancelledCall(callId: UUID) {
-        _currentScreen.value = Screen.Initial
-    }
-
-    override fun muteCall(
-        callId: UUID,
-        isMuted: Boolean,
-    ) {
-        _uiState.update { it.copy(isMuted = isMuted) }
-    }
-
-    override fun holdCall(
-        callId: UUID,
-        isOnHold: Boolean,
-    ) {
-        _uiState.update { it.copy(isOnHold = isOnHold) }
-    }
-
-    override fun onConnectFailure(
-        callId: UUID,
-        callException: CallException,
-    ) {
-        _currentScreen.value = Screen.Initial
-        _uiState.update { it.copy(error = callException.message) }
-    }
-
-    override fun onConnected(callId: UUID) {
-        _currentScreen.value = Screen.Call
-        _uiState.update { it.copy(isLoading = false) }
-    }
-
-    override fun onReconnecting(
-        callId: UUID,
-        callException: CallException,
-    ) {
-        _currentScreen.value = Screen.Call
-        _uiState.update { it.copy(isLoading = true) }
-    }
-
-    override fun onReconnected(callId: UUID) {
-        _uiState.update { it.copy(isLoading = false) }
-    }
-
-    override fun onDisconnected(
-        callId: UUID,
-        callException: CallException?,
-    ) {
-        _currentScreen.value = Screen.Initial
-        _uiState.update {
-            it.copy(isLoading = true, error = callException?.message)
+        override fun disconnectCall(callId: UUID) {
+            _currentScreen.value = Screen.Initial
+            _uiState.update { AlowareUiState() }
         }
-    }
 
-    override fun onCallQualityWarningsChanged(
-        callId: UUID,
-        currentWarnings: MutableSet<Call.CallQualityWarning>,
-        previousWarnings: MutableSet<Call.CallQualityWarning>,
-    ) {
-        // Not used
+        override fun acceptIncomingCall(callId: UUID) {
+            _currentScreen.value = Screen.Call
+        }
+
+        override fun rejectIncomingCall(callId: UUID) {
+            _currentScreen.value = Screen.Initial
+            _uiState.update { AlowareUiState() }
+        }
+
+        override fun incomingCall(
+            callId: UUID,
+            callInvite: CallInvite,
+        ) {
+            _uiState.update {
+                it.copy(
+                    callInvite = callInvite,
+                )
+            }
+        }
+
+        override fun cancelledCall(callId: UUID) {
+            _currentScreen.value = Screen.Initial
+            _uiState.update { AlowareUiState() }
+        }
+
+        override fun muteCall(
+            callId: UUID,
+            isMuted: Boolean,
+        ) {
+            _uiState.update { it.copy(isMuted = isMuted) }
+        }
+
+        override fun holdCall(
+            callId: UUID,
+            isOnHold: Boolean,
+        ) {
+            _uiState.update { it.copy(isOnHold = isOnHold) }
+        }
+
+        override fun onConnectFailure(
+            callId: UUID,
+            callException: CallException,
+        ) {
+            _currentScreen.value = Screen.Initial
+            _uiState.update { AlowareUiState(error = callException.message) }
+        }
+
+        override fun onConnected(callId: UUID) {
+            _currentScreen.value = Screen.Call
+            _uiState.update { it.copy(isLoading = false) }
+        }
+
+        override fun onReconnecting(
+            callId: UUID,
+            callException: CallException,
+        ) {
+            _currentScreen.value = Screen.Call
+            _uiState.update { it.copy(isLoading = true) }
+        }
+
+        override fun onReconnected(callId: UUID) {
+            _uiState.update { it.copy(isLoading = false) }
+        }
+
+        override fun onDisconnected(
+            callId: UUID,
+            callException: CallException?,
+        ) {
+            _currentScreen.value = Screen.Initial
+            _uiState.update {
+                AlowareUiState().copy(isLoading = true, error = callException?.message)
+            }
+        }
+
+        override fun onCallQualityWarningsChanged(
+            callId: UUID,
+            currentWarnings: MutableSet<Call.CallQualityWarning>,
+            previousWarnings: MutableSet<Call.CallQualityWarning>,
+        ) {
+            // Not used
+        }
+
+        override fun registrationSuccessful(fcmToken: String) {
+            // Not used
+        }
+
+        override fun registrationFailed(registrationException: RegistrationException) {
+            // Not used
+        }
+
+        override fun onRinging(callId: UUID) {
+            // Not used
+        }
     }
 
     override fun accept(value: Intent) {
@@ -134,7 +150,7 @@ abstract class VoiceObserverViewModel :
 
             when (action) {
                 Constants.ACTION_INCOMING_CALL_NOTIFICATION -> {
-                    incomingCall(pendingCallId, callInvite)
+                    observer.incomingCall(pendingCallId, callInvite)
                 }
 
                 Constants.ACTION_ACCEPT_CALL -> {
@@ -146,18 +162,6 @@ abstract class VoiceObserverViewModel :
                 else -> {}
             }
         }
-    }
-
-    override fun registrationSuccessful(fcmToken: String) {
-        // Not used
-    }
-
-    override fun registrationFailed(registrationException: RegistrationException) {
-        // Not used
-    }
-
-    override fun onRinging(callId: UUID) {
-        // Not used
     }
 
     protected fun withVoiceService(block: suspend VoiceService.() -> Unit) {

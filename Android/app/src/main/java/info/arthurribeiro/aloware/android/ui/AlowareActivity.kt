@@ -2,6 +2,7 @@ package info.arthurribeiro.aloware.android.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.media.AudioManager
 import android.os.Build
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
@@ -31,6 +32,9 @@ class AlowareActivity : ComponentActivity() {
         requestPermissions()
         setContent()
         viewModel.accept(intent)
+
+        // savedVolumeControlStream = volumeControlStream
+        volumeControlStream = AudioManager.STREAM_VOICE_CALL
     }
 
     private fun setContent() {
@@ -46,12 +50,21 @@ class AlowareActivity : ComponentActivity() {
                             onCallButtonClick = { id ->
                                 viewModel.call(to = id)
                             },
+                            onAnswerButtonClick = {
+                                viewModel.answer()
+                            },
                         )
                     }
 
                     Screen.Call -> {
                         CallScreen(
                             uiState = uiState,
+                            onHangUpClick = {
+                                viewModel.hangup()
+                            },
+                            onMuteToggleClick = {
+                                viewModel.toggleMute()
+                            },
                         )
                     }
                 }

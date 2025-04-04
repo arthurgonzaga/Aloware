@@ -20,11 +20,23 @@ android {
     }
 
     buildTypes {
+
+        buildFeatures {
+            buildConfig = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
+            )
+        }
+
+        debug {
+            buildConfigField(
+                "String",
+                "ACCESS_TOKEN",
+                "\"${properties["ARTHUR_ANDROID_ACCESS_TOKEN"]}\"",
             )
         }
     }

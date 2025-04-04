@@ -214,7 +214,7 @@ public class VoiceService extends Service {
 
         // try to register VoiceConnectionService as an observer when using connection_service flavor
         try {
-            Class<?> clazz = Class.forName("com.twilio.voice.quickstart.VoiceConnectionService");
+            Class<?> clazz = Class.forName("info.arthurribeiro.aloware.android.services.VoiceConnectionService");
             Method method = clazz.getMethod("getObserver", Context.class);
             registerObserver((Observer) Objects.requireNonNull(method.invoke(null, this)));
             log.debug("registered VoiceConnectionService");

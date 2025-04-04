@@ -16,9 +16,9 @@ class AlowareApplication : Application() {
     private var serviceConnectionManager: ServiceConnectionManager? = null
 
     companion object {
-        public const val ACCESS_TOKEN = ""
         private var instance: AlowareApplication? = null
 
+        @JvmStatic
         fun voiceService(task: VoiceServiceTask) {
             instance?.serviceConnectionManager?.invoke(task)
         }
@@ -35,7 +35,7 @@ class AlowareApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         // bind to voice service to keep it active
-        serviceConnectionManager = ServiceConnectionManager(this, ACCESS_TOKEN)
+        serviceConnectionManager = ServiceConnectionManager(this, BuildConfig.ACCESS_TOKEN)
     }
 
     override fun onTerminate() {

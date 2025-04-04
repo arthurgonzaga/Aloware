@@ -1,7 +1,7 @@
 package info.arthurribeiro.aloware.android.ui
 
 import com.twilio.voice.ConnectOptions
-import info.arthurribeiro.aloware.android.AlowareApplication.Companion.ACCESS_TOKEN
+import info.arthurribeiro.aloware.android.BuildConfig
 import kotlinx.coroutines.flow.asStateFlow
 
 class AlowareViewModel : VoiceObserverViewModel() {
@@ -11,11 +11,15 @@ class AlowareViewModel : VoiceObserverViewModel() {
     fun call(to: String) {
         withVoiceService {
             connectCall(
-                ConnectOptions.Builder(ACCESS_TOKEN)
+                ConnectOptions.Builder(BuildConfig.ACCESS_TOKEN)
                     .params(mapOf("to" to to))
                     .build(),
             )
         }
+    }
+
+    fun answer() {
+        withVoiceService { acceptCall(status.pendingCalls.keys.first()) }
     }
 
     fun hangup() {

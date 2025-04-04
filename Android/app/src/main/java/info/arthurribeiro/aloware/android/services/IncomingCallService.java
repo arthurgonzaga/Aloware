@@ -1,10 +1,9 @@
 package info.arthurribeiro.aloware.android.services;
 
-import static android.telecom.TelecomManager.ACTION_INCOMING_CALL;
-
 import static java.lang.String.format;
 
 import static info.arthurribeiro.aloware.android.utils.Constants.ACTION_CANCEL_CALL;
+import static info.arthurribeiro.aloware.android.utils.Constants.ACTION_INCOMING_CALL;
 import static info.arthurribeiro.aloware.android.utils.Constants.CANCELLED_CALL_INVITE;
 import static info.arthurribeiro.aloware.android.utils.Constants.INCOMING_CALL_INVITE;
 

@@ -2,11 +2,11 @@ package info.arthurribeiro.aloware.android.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-
-val Blue = Color(0xFF053692)
-val Green = Color(0xFF00B94A)
-val Red = Color(0xFFC4183C)
-val White = Color(0xFFFFFFFF)
+val DarkBlue = Color(0xFF15163f)
+val Blue = Color(0xFF2a6edd)
+val Red = Color(0xFFEF3434)
+val Green = Color(0xFF00bf4b)
+val White = Color(0xFFe3eaf1)
 
 val Purple80 = Color(0xFF053692)
 val PurpleGrey80 = Color(0xFFCCC2DC)
